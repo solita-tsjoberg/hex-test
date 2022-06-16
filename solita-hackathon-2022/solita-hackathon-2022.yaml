@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 6537c0ef-326b-46e6-bc4a-fce1f5337236 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: d9f4fe23-a63a-4a9d-aca9-503b1e5c0dd8 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: null
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
@@ -415,12 +415,26 @@ cells:
           columnName: COUNTRY
           variableName: COUNTRY['COUNTRY']
       defaultValue: Finland
+  - cellId: 234cc022-5be8-4b70-8386-84335a7a0884 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: select count(*) from employees_
+      dataFrameCell: false
+      dataConnectionId: null
+      resultVariableName: query_result_13
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
   - cellId: 20455e03-f6d8-491d-83a3-6cd8b4c1e53d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: SQL 0
     cellType: SQL
     config:
       source: |
-        select count(job_title_new)/ as "Number of Employees",
+        select count(job_title_new) as "Number of Employees",
                job_title_new as "Job Title"
         from employees_cleaned
         where country = {{ country }}
@@ -532,44 +546,6 @@ cells:
           layer00:
             - name: dummy
               value: 0
-      selectedLayerIndex: 0
-      metadata:
-        byLayer:
-          - selectedDataFrameVariableName: job
-      defaultInputTimezone: null
-  - cellId: 26d65847-7105-4757-a0db-cf956087fe5c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
-    cellLabel: null
-    cellType: CHART
-    config:
-      height: null
-      vegaSpec:
-        $schema: https://vega.github.io/schema/vega-lite/v5.json
-        layer:
-          - data:
-              name: layer00
-            mark:
-              type: bar
-              clip: true
-              orient: vertical
-              filled: false
-              tooltip: true
-            encoding:
-              x:
-                field: LOCATION
-                type: nominal
-                sort: -y
-              y:
-                field: N_EMPLOYEES
-                type: quantitative
-        resolve:
-          scale: {}
-        datasets:
-          layer00:
-            - name: dummy
-              value: 0
-        config:
-          legend:
-            disable: false
       selectedLayerIndex: 0
       metadata:
         byLayer:
@@ -1411,7 +1387,7 @@ cells:
         top_count = topic_df[topic_df['job_title'] == 'DATA ENGINEER'].groupby(['country', 'topic'], as_index=False).size()
 
   - cellId: 0357ddfd-b665-4b7e-b3f9-52fbbc16f18d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
-    cellLabel: How do data engineers describe themselves based on countries?
+    cellLabel: How do data engineers describe themselves in different countries?
     cellType: CHART
     config:
       height: null
