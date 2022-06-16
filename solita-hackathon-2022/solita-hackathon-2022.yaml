@@ -1,0 +1,174 @@
+schemaVersion: 1
+meta:
+  sourceVersionId: dd7ea67d-a4b5-4045-bd3c-bc280f358220 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: ""
+  projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
+  title: Solita Hackathon 2022
+  timezone: null
+  codeLanguage: PYTHON
+projectAssets: {}
+sharedAssets:
+  dataConnections:
+    - dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0 # Snowflake Hackaton 2022 (snowflake)
+cells:
+  - cellId: c9edc854-f1f6-4f33-a2b7-6538f83f3b55 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: INPUT
+    config:
+      inputType: SLIDER
+      name: input_2
+      outputType: NUMBER
+      options: null
+      defaultValue: 3
+  - cellId: 91536523-0558-49be-aa75-6c0a6e85a977 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select *
+        from HACKATHON.EMPLOYEE
+      dataFrameCell: false
+      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
+      resultVariableName: employees
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: 2d09c4a4-bcf4-4060-8d58-a80b23dc5fb0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: import textblob
+  - cellId: 20455e03-f6d8-491d-83a3-6cd8b4c1e53d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: SQL 0
+    cellType: SQL
+    config:
+      source: |-
+        select count(LOCATION) as n_employees,
+               LOCATION
+        from HACKATHON.EMPLOYEE
+        group by LOCATION
+        order by count(location) desc
+        limit {{ input_2}}
+      dataFrameCell: false
+      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
+      resultVariableName: query_result
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: 26d65847-7105-4757-a0db-cf956087fe5c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              orient: vertical
+              filled: false
+              tooltip: true
+            encoding:
+              x:
+                field: LOCATION
+                type: nominal
+                sort: -y
+              y:
+                field: N_EMPLOYEES
+                type: quantitative
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+        config:
+          legend:
+            disable: false
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: query_result
+      defaultInputTimezone: null
+  - cellId: c060b723-c817-4e78-86e4-93c6431c323b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: select sum(N_EMPLOYEES) from query_result
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: query_result_3
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: f40fd58b-567a-4d26-a894-e5bbd6a461d9 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: dbcf6384-871a-4e6d-878e-403c733eb0a6 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: 3f7f9276-447d-4091-9258-229393a832b5 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select
+            EMPLOYEE_ID,
+            INDUSTRY,
+            cast(substring(level,1,1) as int) as level,
+            cast(substring(years,1,1) as int) as years
+            from HACKATHON.KNOWLEDGE where level != 'None' 
+            left join HACKATON.EMPLYEE
+            on KNOWLEDGE
+      dataFrameCell: false
+      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
+      resultVariableName: query_result_4
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+appLayout:
+  fullWidth: false
+  visibleMetadataFields:
+    - NAME
+    - DESCRIPTION
+    - AUTHOR
+    - LAST_EDITED
+    - CATEGORIES
+    - STATUS
+    - TABLE_OF_CONTENTS
+  rows:
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: c9edc854-f1f6-4f33-a2b7-6538f83f3b55
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 26d65847-7105-4757-a0db-cf956087fe5c
+              height: null
+              showLabel: true
