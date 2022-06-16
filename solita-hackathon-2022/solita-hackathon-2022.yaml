@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: fb082965-cb5b-4493-a429-49856ded9037 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: d220dacc-3605-44c2-a6a3-06a169e84bc7 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: null
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
@@ -514,7 +514,7 @@ cells:
             encoding:
               x:
                 field: Job Title
-                type: nominal
+                type: ordinal
                 sort: -y
               y:
                 field: Number of Employees
@@ -1056,7 +1056,7 @@ cells:
           dfName: skills_country
           columnName: country
           variableName: skills_country['country']
-      defaultValue: Finland
+      defaultValue: Sweden
   - cellId: aee03df5-d485-4cb1-826e-76f3f031d591 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: SQL
