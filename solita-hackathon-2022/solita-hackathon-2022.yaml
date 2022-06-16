@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: d220dacc-3605-44c2-a6a3-06a169e84bc7 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: 6537c0ef-326b-46e6-bc4a-fce1f5337236 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: null
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
@@ -420,7 +420,7 @@ cells:
     cellType: SQL
     config:
       source: |
-        select count(job_title_new) as "Number of Employees",
+        select count(job_title_new)/ as "Number of Employees",
                job_title_new as "Job Title"
         from employees_cleaned
         where country = {{ country }}
@@ -514,11 +514,18 @@ cells:
             encoding:
               x:
                 field: Job Title
-                type: ordinal
+                type: nominal
                 sort: -y
               y:
                 field: Number of Employees
                 type: quantitative
+                axis:
+                  format:
+                    columnType: NUMBER
+                    format: PERCENT
+                    numDecimalDigits: 2
+                    currency: USD
+                  formatType: NUMBER_FORMATTER
         resolve:
           scale: {}
         datasets:
@@ -1056,7 +1063,7 @@ cells:
           dfName: skills_country
           columnName: country
           variableName: skills_country['country']
-      defaultValue: Sweden
+      defaultValue: Finland
   - cellId: aee03df5-d485-4cb1-826e-76f3f031d591 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: SQL
@@ -1399,11 +1406,12 @@ cells:
     cellLabel: null
     cellType: CODE
     config:
-      source: |
+      source: |+
         
-        top_count = topic_df.groupby(['country', 'topic'], as_index=False).size()
+        top_count = topic_df[topic_df['job_title'] == 'DATA ENGINEER'].groupby(['country', 'topic'], as_index=False).size()
+
   - cellId: 0357ddfd-b665-4b7e-b3f9-52fbbc16f18d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
-    cellLabel: Chart 50
+    cellLabel: How do data engineers describe themselves based on countries?
     cellType: CHART
     config:
       height: null
@@ -1684,6 +1692,14 @@ appLayout:
           elements:
             - type: CELL
               cellId: 80ebfa7f-6ecd-43c5-b687-129b5e8002ad
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 0357ddfd-b665-4b7e-b3f9-52fbbc16f18d
               height: null
               showLabel: true
     - columns:
