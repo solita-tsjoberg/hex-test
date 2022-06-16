@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 59ed67f9-39ca-4abe-a510-0ac876705c8b # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: df972fbd-a683-48b3-a284-edbe487132d3 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: ""
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
@@ -134,7 +134,8 @@ cells:
             cast(substring(level,1,1) as int) as level,
             cast(substring(years,1,1) as int) as years
             from HACKATHON.KNOWLEDGE where level != 'None' 
-            left join HACKATON.
+            left join HACKATON.EMPLYEE
+            on KNOWLEDGE
       dataFrameCell: false
       dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
       resultVariableName: query_result_4
