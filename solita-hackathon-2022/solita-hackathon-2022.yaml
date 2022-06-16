@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 259af1c2-d3b7-410a-ac94-f0bef22bfc2d # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: 9bd1f658-7029-47c6-b504-21cbc368bac2 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: null
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
@@ -28,6 +28,25 @@ cells:
         import seaborn as sns
         import matplotlib.pyplot as plt
         from textblob import TextBlob
+  - cellId: 614dc785-fb57-4ff6-b21b-71477cb3ee4f # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: select * from
+      dataFrameCell: false
+      dataConnectionId: null
+      resultVariableName: query_result_14
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: 1c9f3f2a-4ac3-4784-9b77-b8d936cfd9bf # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
   - cellId: 63abb9b3-0b75-4b84-a5b1-bd0985816b17 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: SQL
@@ -568,20 +587,6 @@ cells:
         byLayer:
           - selectedDataFrameVariableName: job
       defaultInputTimezone: null
-  - cellId: c060b723-c817-4e78-86e4-93c6431c323b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
-    cellLabel: null
-    cellType: SQL
-    config:
-      source: select sum(N_EMPLOYEES) from query_result
-      dataFrameCell: true
-      dataConnectionId: null
-      resultVariableName: query_result_3
-      enableCache: false
-      runOnLoad: false
-      runOnSchedule: false
-      useRichDisplay: false
-      sqlCellOutputType: PANDAS
-      tableDisplayConfig: null
   - cellId: 3f7f9276-447d-4091-9258-229393a832b5 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: SQL
