@@ -1,7 +1,7 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: dd7ea67d-a4b5-4045-bd3c-bc280f358220 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
-  description: ""
+  sourceVersionId: 87b18547-6431-4ae2-ac19-55f513d16cbd # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  description: null
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
   timezone: null
@@ -11,56 +11,525 @@ sharedAssets:
   dataConnections:
     - dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0 # Snowflake Hackaton 2022 (snowflake)
 cells:
-  - cellId: c9edc854-f1f6-4f33-a2b7-6538f83f3b55 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+  - cellId: e761253b-efdb-4cca-9914-24da2eee9d7d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
-    cellType: INPUT
+    cellType: MARKDOWN
     config:
-      inputType: SLIDER
-      name: input_2
-      outputType: NUMBER
-      options: null
-      defaultValue: 3
-  - cellId: 91536523-0558-49be-aa75-6c0a6e85a977 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+      source: |-
+        ## Data Cleaning
+
+        To work
+  - cellId: a9b2c2f5-53a2-46e1-8e73-af044ca3d0f9 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        import pandas as pd
+        import seaborn as sns
+        import matplotlib.pyplot as plt
+        from textblob import TextBlob
+  - cellId: 63abb9b3-0b75-4b84-a5b1-bd0985816b17 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: SQL
     config:
       source: |-
-        select *
+        select *,
+               LOCATION as LOCATION_OLD,
+                           case
+                               when LOCATION in ('Helsinki',
+                                                 'Tampere',
+                                                 'Turku',
+                                                 'Oulu',
+                                                 'Lahti') then 'Finland'
+                               when LOCATION in ('Berlin',
+                                                 'Munich') then 'Germany'
+                               when LOCATION like '%teborg'
+                                    or LOCATION='Stockholm' then 'Sweden'
+                               when LOCATION ='Leuven' then 'Belgium'
+                               when LOCATION ='Tallinn' then 'Estonia'
+                               when LOCATION ='Copenhagen' then 'Denmark'
+                               when LOCATION = '' then 'Missing'
+                               else LOCATION
+                           end as COUNTRY
         from HACKATHON.EMPLOYEE
       dataFrameCell: false
       dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
-      resultVariableName: employees
+      resultVariableName: employees_cleaned
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: LATEST_EDU
+            renameTo: null
+            size: 124
+            wrapText: null
+            displayFormat: null
+          - originalName: LATEST_EDU_MAJOR
+            renameTo: null
+            size: 159
+            wrapText: null
+            displayFormat: null
+          - originalName: LOCATION
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: PERSONAL_DESC
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: PROJECT_HISTORY_FREE_TEXT
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: STRENGTH_1
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: STRENGTH_2
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: STRENGTH_3
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: STRENGTH_4
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: EMPLOYEE_ID
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: JOB_TITLE
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: WORK_HISTORY_DESC_1
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: NO_ROW
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LOCATION_OLD
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: COUNTRY
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: f9bd73c6-d665-4063-a8f8-090a00b11c41 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select 
+            EMPLOYEE_ID,
+            JOB_TITLE as JOB_TITLE_OLD,
+               UPPER(JOB_TITLE) as JOB_TITLE,
+               case
+                   when UPPER(JOB_TITLE) like '%DATA ENGINEER%' then 'DATA ENGINEER'
+                   when UPPER(JOB_TITLE) like '%DATA ARCHITECT%'
+                        or UPPER(JOB_TITLE) like '%DATA_ARCHITECT%' then 'DATA ARCHITECT'
+                   when UPPER(JOB_TITLE) like '%ARCHITECT%' then 'ARCHITECT OTHER'
+                   when UPPER(JOB_TITLE) like '%MANAGE%'
+                        or UPPER(JOB_TITLE) like '%DIRECTOR%' then 'MANAGER/DIRECTOR'
+                   when UPPER(JOB_TITLE) like '%VISUAL%'
+                        or UPPER(JOB_TITLE) like '%DATA CONSULTANT%'
+                        or UPPER(JOB_TITLE) like '%TABLEAU%' then 'VIZUALIZATION CONSULTANT'
+                   when UPPER(JOB_TITLE) like '%DATA SCIEN%' then 'DATA SCIENTIST'
+                   when UPPER(JOB_TITLE) like '%ML ENGINEER%'
+                        or UPPER(JOB_TITLE) like '%MACHINE LEARNING ENGINEER%' then 'ML ENGINEER'
+                   when UPPER(JOB_TITLE) like '%DATA GOVERNANCE%' then 'DATA GOVERNANCE CONSULTANT'
+                   when UPPER(JOB_TITLE) like '%ANALY%' then 'ANALYST'
+                   when UPPER(JOB_TITLE) like '%INTEGRATION%' then 'INTEGRATION CONSULTANT'
+                   when UPPER(JOB_TITLE) like '%CLOUD%' then 'CLOUD CONSULTANT'
+                   when UPPER(JOB_TITLE) like '%SOFTWARE DEVELOPER%' then 'SOFTWARE DEVELOPER'
+                   when UPPER(JOB_TITLE) like '%DEVELOPER%' then 'DEVELOPER OTHER'
+                   when UPPER(JOB_TITLE) like '%SOFTWARE DESIG%' then 'SOFTWARE DESIGNER'
+                   when UPPER(JOB_TITLE) like '%DESIG%' then 'DESIGNER OTHER'
+                   when UPPER(JOB_TITLE) like '%AGILE COACH%' then 'AGILE_COACH'
+                   else 'OTHER'
+               end as JOB_TITLE_NEW,
+               case
+                   when UPPER(JOB_TITLE) like '%SENIOR%' then 1
+                   else 0
+               end as SENIOR,
+               case
+                   when UPPER(JOB_TITLE) like '%DATA ENGINEER%' then 1
+                   else 0
+               end as DATA_ENGINEER,
+               case
+                   when UPPER(JOB_TITLE) like '%DATA GOVERNANCE%' then 1
+                   else 0
+               end as DATA_GOVERNANCE,
+               case
+                   when UPPER(JOB_TITLE) like '%MANAGE%' then 1
+                   else 0
+               end as MANAGER,
+               case
+                   when UPPER(JOB_TITLE) like '%DIRECTOR%' then 1
+                   else 0
+               end as DIRECTOR,
+               case
+                   when UPPER(JOB_TITLE) like '%DESIGNER%' then 1
+                   else 0
+               end as DESIGNER,
+               case
+                   when UPPER(JOB_TITLE) like '%DEVELOPER%' then 1
+                   else 0
+               end as DEVELOPER,
+               case
+                   when UPPER(JOB_TITLE) like '%ARCHITECT%' then 1
+                   else 0
+               end as ARCHITECT,
+               case
+                   when UPPER(JOB_TITLE) like '%DATA ARCHITECT%' or UPPER(JOB_TITLE) like '%DATA_ARCHITECT%' then 1
+                   else 0
+               end as DATA_ARCHITECT,
+               case
+                   when UPPER(JOB_TITLE) like '%DATA SCIEN%' then 1
+                   else 0
+               end as DATA_SCIENTIST,
+               case
+                   when UPPER(JOB_TITLE) like '%DATA CONSULTANT%' then 1
+                   else 0
+               end as DATA_CONSULTANT,
+               case
+                   when UPPER(JOB_TITLE) like '%BUSINESS ANAL%' then 1
+                   else 0
+               end as BUSINESS_ANALYST,
+               case
+                   when UPPER(JOB_TITLE) like '%BUSINESS%' then 1
+                   else 0
+               end as BUSINESS,
+               case
+                   when UPPER(JOB_TITLE) like '%INTEGRATION%' then 1
+                   else 0
+               end as INTEGRATION,
+               case
+                   when UPPER(JOB_TITLE) like '%CLOUD%' then 1
+                   else 0
+               end as CLOUD,
+               case
+                   when UPPER(JOB_TITLE) like '%VISUAL%' then 1
+                   else 0
+               end as VIZ,
+               case
+                   when UPPER(JOB_TITLE) like '%ANALY%' then 1
+                   else 0
+               end as ANALYTICS,
+               case
+                   when UPPER(JOB_TITLE) like '%AGILE COACH%' then 1
+                   else 0
+               end as AGILE_COACH,
+               case
+                   when UPPER(JOB_TITLE) not like '%SENIOR%'
+                        and UPPER(JOB_TITLE) not like '%DATA ENGINEER%'
+                        and UPPER(JOB_TITLE) not like '%MANAGE%'
+                        and UPPER(JOB_TITLE) not like '%CLOUD%'
+                        and UPPER(JOB_TITLE) not like '%DATA GOVERNANCE%'
+                        and UPPER(JOB_TITLE) not like '%INTEGRATION%'
+                        and UPPER(JOB_TITLE) not like '%DIRECTOR%'
+                        and UPPER(JOB_TITLE) not like '%DESIGNER%'
+                        and UPPER(JOB_TITLE) not like '%DEVELOPER%'
+                        and UPPER(JOB_TITLE) not like '%ARCHITECT%'
+                        and UPPER(JOB_TITLE) not like '%DATA SCIEN%'
+                        and UPPER(JOB_TITLE) not like '%DATA CONSULTANT%'
+                        and UPPER(JOB_TITLE) not like '%BUSINESS ANAL%'
+                        and UPPER(JOB_TITLE) not like '%VISUAL%'
+                        and UPPER(JOB_TITLE) not like '%ANALY%'
+                        and UPPER(JOB_TITLE) not like '%AGILE COACH%'
+                        and UPPER(JOB_TITLE) not like '%BUSINESS%' then 1
+                   else 0
+               end as REST
+        from HACKATHON.EMPLOYEE
+      dataFrameCell: false
+      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
+      resultVariableName: job_classification
       enableCache: false
       runOnLoad: false
       runOnSchedule: false
       useRichDisplay: false
       sqlCellOutputType: PANDAS
       tableDisplayConfig: null
-  - cellId: 2d09c4a4-bcf4-4060-8d58-a80b23dc5fb0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+  - cellId: 30e506cc-8b0b-4155-81fb-81b2b43bd638 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: CODE
     config:
-      source: import textblob
+      source: job_classification.columns
+  - cellId: 76317e36-ab7d-4b86-a76c-e8a9cca822ed # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        with ec as (
+            select 
+                employee_id,
+                latest_edu,
+                latest_edu_major,
+                location,
+                location_old,
+                personal_desc,
+                project_history_free_text,
+                strength_1,
+                strength_2,
+                strength_3,
+                strength_4,
+                work_history_desc_1,
+                work_history_desc_2,
+                work_history_title_1,
+                work_history_title_2,
+                country
+            from employees_cleaned
+        ),
+
+        jb as (
+            select 
+                *
+            from job_classification
+        )
+        select ec.*, 
+                jb.JOB_TITLE_OLD,
+                jb.JOB_TITLE,
+                jb.JOB_TITLE_NEW,
+                jb.SENIOR,
+                jb.DATA_ENGINEER,
+                jb.DATA_GOVERNANCE,
+                jb.MANAGER,
+                jb.DIRECTOR, 
+                jb.DESIGNER,
+                jb.DEVELOPER, 
+                jb.ARCHITECT, 
+                jb.DATA_ARCHITECT, 
+                jb.DATA_SCIENTIST,
+                jb.DATA_CONSULTANT, 
+                jb.BUSINESS_ANALYST, 
+                jb.BUSINESS, 
+                jb.INTEGRATION,
+                jb.CLOUD, 
+                jb.VIZ, 
+                jb.ANALYTICS, 
+                jb.AGILE_COACH, 
+                jb.REST
+
+         from ec left join jb on ec.EMPLOYEE_ID = jb.EMPLOYEE_ID
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: employees_cleaned
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties: []
+  - cellId: e16f9947-a5b6-4625-8b7b-a7f87b404561 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: 7ac6fdf6-adc1-4878-9136-35f1578d178b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |
+        employees_cleaned.columns = employees_cleaned.columns.str.lower()
+        employees_cleaned['location'] = employees_cleaned['location'].apply(lambda x: 'Missing' if x == '' else x)
+  - cellId: 293f9a88-b623-4f72-99ec-09ab0dafba07 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "### Add sentiment analysis columns"
+  - cellId: 4a954d46-aebd-4888-a826-4ec501784964 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: "#call the classifier
+
+        def sentiment_texblob(row):
+
+        \ \ 
+
+        \    classifier = TextBlob(row)
+
+        \    polarity = classifier.sentiment.polarity
+
+        \    subjectivity = classifier.sentiment.subjectivity
+
+        \   \ 
+
+        \    return polarity,subjectivity
+
+
+        employees_cleaned[['polarity', 'subjectivity']] = employees_cleaned['personal_desc'].apply(lambda x: sentiment_texblob(x)).apply(pd.Series)
+
+
+        \    "
+  - cellId: df237b2c-037d-4f5b-8fab-461dd216911e # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: "## Employee counts"
+  - cellId: be6eac2d-c839-4663-94ef-2535fb354410 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: country
+    cellType: INPUT
+    config:
+      inputType: DROPDOWN
+      name: country
+      outputType: DYNAMIC
+      options:
+        valueOptions:
+          dfName: COUNTRY
+          columnName: COUNTRY
+          variableName: COUNTRY['COUNTRY']
+      defaultValue: Finland
   - cellId: 20455e03-f6d8-491d-83a3-6cd8b4c1e53d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: SQL 0
     cellType: SQL
     config:
-      source: |-
-        select count(LOCATION) as n_employees,
-               LOCATION
-        from HACKATHON.EMPLOYEE
-        group by LOCATION
-        order by count(location) desc
-        limit {{ input_2}}
-      dataFrameCell: false
-      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
-      resultVariableName: query_result
+      source: |
+        select count(job_title_new) as "Number of Employees",
+               job_title_new as "Job Title"
+        from employees_cleaned
+        where country = {{ country }}
+        group by job_title_new
+        order by count(job_title_new) desc
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: job
       enableCache: false
       runOnLoad: false
       runOnSchedule: false
-      useRichDisplay: false
+      useRichDisplay: true
       sqlCellOutputType: PANDAS
-      tableDisplayConfig: null
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: N_EMPLOYEES
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LOCATION
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: n_employees
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: job_title
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: location
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: job_title_new
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: JOB_TITLE_NEW
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: number of employees
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: job title
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: Number of Employees
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: Job Title
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: f13618bb-3a8b-4f61-8ac4-55d865622a8a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              x:
+                field: Job Title
+                type: nominal
+                sort: -y
+              y:
+                field: Number of Employees
+                type: quantitative
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: job
+      defaultInputTimezone: null
   - cellId: 26d65847-7105-4757-a0db-cf956087fe5c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: CHART
@@ -97,7 +566,7 @@ cells:
       selectedLayerIndex: 0
       metadata:
         byLayer:
-          - selectedDataFrameVariableName: query_result
+          - selectedDataFrameVariableName: job
       defaultInputTimezone: null
   - cellId: c060b723-c817-4e78-86e4-93c6431c323b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
@@ -113,38 +582,1005 @@ cells:
       useRichDisplay: false
       sqlCellOutputType: PANDAS
       tableDisplayConfig: null
-  - cellId: f40fd58b-567a-4d26-a894-e5bbd6a461d9 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
-    cellLabel: null
-    cellType: CODE
-    config:
-      source: ""
-  - cellId: dbcf6384-871a-4e6d-878e-403c733eb0a6 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
-    cellLabel: null
-    cellType: CODE
-    config:
-      source: ""
   - cellId: 3f7f9276-447d-4091-9258-229393a832b5 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
     cellLabel: null
     cellType: SQL
     config:
       source: |-
         select
-            EMPLOYEE_ID,
-            INDUSTRY,
-            cast(substring(level,1,1) as int) as level,
-            cast(substring(years,1,1) as int) as years
-            from HACKATHON.KNOWLEDGE where level != 'None' 
-            left join HACKATON.EMPLYEE
-            on KNOWLEDGE
+            s.EMPLOYEE_ID,
+            case 
+                when CHARINDEX('AWS',s.skill) > 0
+                then 'AWS'
+                when CHARINDEX('SQL',s.skill) > 0
+                then 'SQL'
+                else s.skill
+                end as skill,
+            cast(substring(s.level,1,1) as int) as level,
+            cast(substring(s.years,1,1) as int) as years,
+            e.job_title,
+            e.location
+            from HACKATHON.SKILL s
+            left join HACKATHON.EMPLOYEE s
+            on s.EMPLOYEE_ID = e.EMPLOYEE_ID
+            where s.level != 'None'
+            and s.years != 'None';
       dataFrameCell: false
       dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
-      resultVariableName: query_result_4
+      resultVariableName: skills_table
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: EMPLOYEE_ID
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: INDUSTRY
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LEVEL
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: YEARS
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LOCATION
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: SKILL
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: JOB_TITLE
+            renameTo: null
+            size: 260
+            wrapText: null
+            displayFormat: null
+          - originalName: CHARINDEX('AMIT','HJWEHAMIT')
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: CHARINDEX('AMIT','AMIT')
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: CHARINDEX('AMITASD','AMIT')
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: 104f2fbc-e8de-438d-9956-36d12750b274 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |
+        select 
+           count(skill)
+        from 
+            skills_table
+            left join employees_cleaned
+            on 
+            skills_table.LOCATION = employees_cleaned.location
+        group by
+            skill
+        order by count(skill) desc
+            limit 10
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: query_result_9
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: EMPLOYEE_ID
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: SKILL
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LEVEL
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: YEARS
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: JOB_TITLE
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LOCATION
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: COUNTRY
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: count_star()
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: count
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: country
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: count(skill)
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: 5f1e3801-cd67-4cc1-a29b-ae01ce917731 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Chart 14
+    cellType: CHART
+    config:
+      height: 633
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              tooltip: true
+              filled: true
+            encoding:
+              color:
+                field: SKILL
+                type: nominal
+                aggregate: count
+              x:
+                field: SKILL
+                type: nominal
+                sort: -y
+              y:
+                field: count(skill)
+                type: quantitative
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: line
+              clip: true
+            encoding: {}
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: line
+              clip: true
+            encoding: {}
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: query_result_9
+          - selectedDataFrameVariableName: null
+          - selectedDataFrameVariableName: null
+      defaultInputTimezone: null
+  - cellId: 706bbbf0-6a3c-4b78-a0dc-6bd9bd2c58b0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Code 9
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: 3c2b1d77-7fda-4dfd-a2ae-d1c2af8cb149 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        # Sentiment Analysis
+
+        Is there any difference between the Countries and where the people are most subjective?
+
+
+        ..
+
+        SVÄÄRIGE! 🇸🇪🇸🇪🇸🇪 NUMMER ETT!! Wooo!! 🥳
+  - cellId: f1baac4f-50a1-4050-b832-e99db183f703 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |
+        sns.displot(employees_cleaned, x = 'subjectivity',  binwidth=0.01)
+  - cellId: 4cf7fff8-358e-4ed5-9f2e-0a7092f8a40a # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: INPUT
+    config:
+      inputType: MULTISELECT
+      name: country_var
+      outputType: DYNAMIC
+      options:
+        multiValueOptions:
+          dfName: employees_cleaned
+          columnName: country
+          variableName: employees_cleaned['country']
+      defaultValue:
+        - Finland
+  - cellId: 77295dc4-a86d-475b-bcba-9a43a952cfac # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              tooltip: true
+              filled: true
+            encoding:
+              x:
+                field: country
+                type: nominal
+                sort: -y
+              y:
+                field: subjectivity
+                type: quantitative
+                aggregate: mean
+                sort: ascending
+              color:
+                field: country
+                type: nominal
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: employees_cleaned
+      defaultInputTimezone: null
+  - cellId: 66e2d78f-72a7-4adc-8ab0-d5600811fa0c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        ### Subjectivity vs Job Title
+
+        Who is the most and least \~subjective~ in their personal description?
+  - cellId: 46320550-9bf2-47bc-aa53-c68885b8bac3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: point
+              clip: true
+              tooltip: true
+              filled: true
+            encoding:
+              x:
+                field: job_title_new
+                type: nominal
+                sort: y
+              y:
+                field: subjectivity
+                type: quantitative
+                aggregate: mean
+              color:
+                field: job_title_new
+                type: nominal
+              size:
+                field: employee_id
+                type: nominal
+                aggregate: count
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: employees_cleaned
+      defaultInputTimezone: null
+  - cellId: e5c6d341-f0e4-45b5-9ad4-26e61a194cb0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: 67250b44-a775-4712-8ff6-a9df80adeeb6 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: ""
+      dataFrameCell: false
+      dataConnectionId: null
+      resultVariableName: query_result_9
       enableCache: false
       runOnLoad: false
       runOnSchedule: false
       useRichDisplay: false
       sqlCellOutputType: PANDAS
       tableDisplayConfig: null
+  - cellId: 168029ab-dfda-427e-9ef5-358f98db161d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              tooltip: true
+              orient: horizontal
+            encoding:
+              y:
+                field: subjectivity
+                type: quantitative
+              x:
+                field: location
+                type: nominal
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: employees_cleaned
+      defaultInputTimezone: null
+  - cellId: 50ddc9bc-f753-41f6-83dd-56bcb4f8e187 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: a5654653-429a-4b5d-8858-66f6deb7ac41 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: ""
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: query_result_7
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: 4d404673-9a56-4e7f-89c9-4f7aed6c8dd1 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: select * from hackathon.skill;
+      dataFrameCell: false
+      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
+      resultVariableName: SKILL
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: 20862c6f-0d69-4dc7-a67e-ff85e2ba381e # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select s.skill, count(s.skill) as nbr_of_skills, e.COUNTRY
+        from skill s
+        left join employees_cleaned e on e.EMPLOYEE_ID = s.EMPLOYEE_ID
+        --where e.country = 'Sweden'
+        group by s.skill, e.country
+        order by nbr_of_skills desc;
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: skills_country
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: da952061-6e40-4647-9be2-c563ed5d9735 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Country
+    cellType: INPUT
+    config:
+      inputType: DROPDOWN
+      name: country_filter
+      outputType: DYNAMIC
+      options:
+        valueOptions:
+          dfName: skills_country
+          columnName: country
+          variableName: skills_country['country']
+      defaultValue: Belgium
+  - cellId: aee03df5-d485-4cb1-826e-76f3f031d591 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select * from skills_country
+        where country = {{ country_filter }}
+        limit 15;
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: skills_country_select
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: 3ebdd9ca-b97c-4c10-abd3-1d8aec6660a3 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select *,
+               case
+                   when s.skill = 'AWS - Amazon Web Services' then 'AWS'
+                   when s.skill = 'Databases & SQL' then 'SQL'
+                   when s.skill = 'Data Visualisations (Tableau)' then 'Tableau'
+                   else s.skill
+               end as Skills
+        from skills_country_select s;
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: skills_cleaned
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: true
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig:
+        pageSize: 12
+        hideIndex: false
+        defaultSortColumn: null
+        defaultSortDirection: ASC
+        conditionalFormatting: null
+        filters: null
+        columnProperties:
+          - originalName: SKILL
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: nbr_of_skills
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: skill
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: skill_c
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: EMPLOYEE_ID
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: LEVEL
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: YEARS
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: skills
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+          - originalName: country
+            renameTo: null
+            size: 120
+            wrapText: null
+            displayFormat: null
+  - cellId: 1307b8b0-3f9a-45e2-b59c-dda033fb02ad # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Skillset Solita
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              x:
+                field: skills
+                type: nominal
+                sort: -y
+                title: Skills
+              y:
+                field: nbr_of_skills
+                type: quantitative
+                aggregate: sum
+                sort: ascending
+                title: Number of Employees
+              color:
+                field: skills
+                type: nominal
+                legend: null
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: skills_cleaned
+      defaultInputTimezone: null
+  - cellId: 0ae8dfbc-32ad-4479-be9d-5ccd08098f79 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select s.skill, count(s.skill) as nbr_of_skills, e.country
+        from skill s
+        left join employees_cleaned e on e.EMPLOYEE_ID = s.EMPLOYEE_ID
+        group by e.country, s.skill
+        order by nbr_of_skills desc
+        limit 15;
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: query_result_11
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: b6b2964b-e3f4-4547-8710-3577faf7a6aa # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: MARKDOWN
+    config:
+      source: |-
+        ## Topic modelling 
+
+        In what different ways are solitans describing themselves and how does it differ between countries? 
+  - cellId: 4885b752-1038-40d5-856f-a6c9e8d3e2d8 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: select * from employee
+      dataFrameCell: false
+      dataConnectionId: 5397326b-0f3f-4703-82be-c568114109f0
+      resultVariableName: desc_df
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: c3118709-369c-4d9e-94d9-91069610051c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        import pandas as pd 
+        import re
+
+        desc_df.columns= desc_df.columns.str.lower() ## lower column names 
+
+        desc_df["personal_desc"] = desc_df["personal_desc"].apply(lambda x: re.sub("\W+", " ", x)) 
+        #desc_df["personal_desc"] = desc_df["personal_desc"].str.replace('\d+', '')
+        desc_df = desc_df[desc_df['personal_desc'].str.len() > 0] ## remove empty
+        desc_df = desc_df[['employee_id','personal_desc']].reset_index()
+  - cellId: bd68fa69-973e-48d0-b857-ad81302bca85 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |
+        from time import time
+        import matplotlib.pyplot as plt
+
+        from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+        from sklearn.decomposition import NMF,  LatentDirichletAllocation
+
+        n_features = 200
+        n_components = 10
+        n_top_words = 15
+        batch_size = 128
+
+        def plot_top_words(model, feature_names, n_top_words, title):
+            fig, axes = plt.subplots(2, 5, figsize=(30, 15), sharex=True)
+            axes = axes.flatten()
+            for topic_idx, topic in enumerate(model.components_):
+                top_features_ind = topic.argsort()[: -n_top_words - 1 : -1]
+                top_features = [feature_names[i] for i in top_features_ind]
+                weights = topic[top_features_ind]
+
+                ax = axes[topic_idx]
+                ax.barh(top_features, weights, height=0.7)
+                ax.set_title(f"Topic {topic_idx +1}", fontdict={"fontsize": 30})
+                ax.invert_yaxis()
+                ax.tick_params(axis="both", which="major", labelsize=20)
+                for i in "top right left".split():
+                    ax.spines[i].set_visible(False)
+                fig.suptitle(title, fontsize=40)
+
+            plt.subplots_adjust(top=0.90, bottom=0.05, wspace=0.90, hspace=0.3)
+            plt.show()
+
+        print("Loading dataset...")
+        t0 = time()
+
+        data = desc_df['personal_desc'].tolist()
+
+        data_samples = data
+        print("done in %0.3fs." % (time() - t0))
+
+        # Use tf-idf features for NMF.
+        print("Extracting tf-idf features for NMF...")
+        tfidf_vectorizer = TfidfVectorizer(
+            max_df=0.95, min_df=2, max_features=n_features, stop_words="english"
+        )
+        t0 = time()
+        tfidf = tfidf_vectorizer.fit_transform(data_samples)
+        print("done in %0.3fs." % (time() - t0))
+
+
+        print( n_components)
+        t0 = time()
+        nmf = NMF(
+            n_components=n_components,
+            random_state=1,
+            #init=init,
+            beta_loss="kullback-leibler",
+            solver="mu",
+            max_iter=1000,
+            alpha_W=0.00005,
+            alpha_H=0.00005,
+            l1_ratio=0.5,
+        ).fit(tfidf)
+
+
+        tfidf_feature_names = tfidf_vectorizer.get_feature_names_out()
+  - cellId: df90afc2-e40f-4e33-8106-d6a0f035a680 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        plot_top_words(
+            nmf,
+            tfidf_feature_names,
+            n_top_words,
+            "Topics in personal descriptions",
+        )
+  - cellId: 9bb83664-6c83-4c8f-a4cb-88d0f78da0d7 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        components_df = pd.DataFrame(nmf.components_, columns=tfidf_vectorizer.get_feature_names_out())
+
+        rows_= []
+        for topic in range(components_df.shape[0]):
+            tmp = components_df.iloc[topic]
+            iter_tmp = pd.DataFrame(tmp.nlargest(10)).reset_index()
+            iter_tmp.columns = ['word', 'value']
+            iter_tmp['topic'] = "Topic " + str(topic + 1)
+            rows_.append(iter_tmp)
+
+        topic_words = pd.concat(rows_)
+  - cellId: 4bdc27b0-bdcc-41b9-84f8-9df577b5ffbb # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: topic_words
+  - cellId: 5470b714-3206-4b3a-8d4b-af817798ccf0 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: ""
+  - cellId: f1234950-7891-4d58-b567-4a9c55e29c8c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        nmf_features = nmf.transform(tfidf)
+        df = pd.DataFrame(nmf_features)
+        f_max = df.idxmax(axis=1) 
+        df_m = pd.DataFrame(f_max).reset_index()
+
+        df_m.columns = ['index', 'topic']
+        desc_df = desc_df.drop(['index'], axis=1).reset_index()
+
+        from functools import reduce
+
+        join_frames = [desc_df, df_m]
+        df_topic = reduce(lambda  left,right: pd.merge(left,right,on=['index'],
+                                                    how='left'), join_frames)
+
+        df_topic
+  - cellId: fdc897b4-8947-4dd2-9f03-663601217f29 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |-
+        select 
+        ec.employee_id, 
+        job_title, 
+        location_old, 
+        country, 
+        concat('Topic ' , topic +1) as topic 
+        from employees_cleaned as ec 
+        right join df_topic as t 
+        on ec.employee_id = t.employee_id
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: topic_df
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: f32d1d85-120a-4b3a-9447-db9879494c0c # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |
+        
+        top_count = topic_df.groupby(['country', 'topic'], as_index=False).size()
+  - cellId: 0357ddfd-b665-4b7e-b3f9-52fbbc16f18d # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Chart 50
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              color:
+                field: topic
+                type: nominal
+              x:
+                field: country
+                type: nominal
+                sort: -y
+              y:
+                field: size
+                type: quantitative
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: top_count
+      defaultInputTimezone: null
+  - cellId: 5990c2ce-89da-4f24-8907-30277628dc93 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |
+        top_titles = topic_df.groupby(['job_title'], as_index=False).size().sort_values(by=['size'], ascending=False).head(10)
+  - cellId: 976af303-f5bb-4dd7-ab55-352a12afed3f # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: CODE
+    config:
+      source: |-
+        
+        topic_dfs = topic_df[topic_df['job_title'].isin(top_titles.job_title.tolist())]
+
+        top_title = topic_dfs.groupby(['job_title', 'topic'], as_index=False).size()
+
+        title_topics = top_title.sort_values(by=['size'], ascending=False)
+        title_topics
+  - cellId: 80ebfa7f-6ecd-43c5-b687-129b5e8002ad # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: How do solitans describe themselves for different job titles?
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              tooltip: true
+              type: bar
+              clip: true
+            encoding:
+              x:
+                field: size
+                type: quantitative
+                sort: ascending
+              y:
+                field: job_title
+                type: nominal
+                sort: -x
+              color:
+                field: topic
+                type: nominal
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: title_topics
+      defaultInputTimezone: null
+  - cellId: 2fa7bb0d-31c5-4540-8025-d374c049bd74 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: select * from employees_cleaned
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: Annelie
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: d80c437a-08b8-401e-8554-1e4c332991e2 # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: null
+    cellType: SQL
+    config:
+      source: |+
+        select * from (
+        select ROW_NUMBER() OVER (PARTITION BY country ORDER BY no_rows desc)  AS Strength_rank,no_rows,strength,country from (
+            select count(1) as no_rows, strength,country from (
+        SELECT employee_id, country, UPPER(strength_1) as  strength, job_title_new
+          FROM employees_cleaned
+
+         UNION
+
+        SELECT employee_id, country, UPPER(strength_2) as  strength, job_title_new
+          FROM employees_cleaned
+           UNION
+
+        SELECT employee_id, country, UPPER(strength_3) as  strength, job_title_new
+          FROM employees_cleaned
+           UNION
+
+        SELECT employee_id, country, UPPER(strength_4) as  strength, job_title_new
+          FROM employees_cleaned)
+          group by 2,3
+          order by 1 desc
+        )
+         order by 2 desc)
+         where Strength_rank<=3
+         order by country
+
+      dataFrameCell: true
+      dataConnectionId: null
+      resultVariableName: query_result_12
+      enableCache: false
+      runOnLoad: false
+      runOnSchedule: false
+      useRichDisplay: false
+      sqlCellOutputType: PANDAS
+      tableDisplayConfig: null
+  - cellId: d78a21ad-a8ba-4e5a-befd-5439486baa5b # DO NOT CHANGE - Hex uses this to match up cells when reimporting the file, and detect any changes to existing cells
+    cellLabel: Top 3 Strenghts per country
+    cellType: CHART
+    config:
+      height: null
+      vegaSpec:
+        $schema: https://vega.github.io/schema/vega-lite/v5.json
+        layer:
+          - data:
+              name: layer00
+            mark:
+              type: bar
+              clip: true
+              tooltip: true
+            encoding:
+              color:
+                field: strength_rank
+                type: ordinal
+              x:
+                field: country
+                type: nominal
+              y:
+                field: strength
+                type: nominal
+        resolve:
+          scale: {}
+        datasets:
+          layer00:
+            - name: dummy
+              value: 0
+      selectedLayerIndex: 0
+      metadata:
+        byLayer:
+          - selectedDataFrameVariableName: query_result_12
+      defaultInputTimezone: null
 appLayout:
   fullWidth: false
   visibleMetadataFields:
@@ -161,7 +1597,7 @@ appLayout:
           end: 30
           elements:
             - type: CELL
-              cellId: c9edc854-f1f6-4f33-a2b7-6538f83f3b55
+              cellId: 4cf7fff8-358e-4ed5-9f2e-0a7092f8a40a
               height: null
               showLabel: true
     - columns:
@@ -169,6 +1605,92 @@ appLayout:
           end: 120
           elements:
             - type: CELL
-              cellId: 26d65847-7105-4757-a0db-cf956087fe5c
+              cellId: df237b2c-037d-4f5b-8fab-461dd216911e
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: da952061-6e40-4647-9be2-c563ed5d9735
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 1307b8b0-3f9a-45e2-b59c-dda033fb02ad
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: be6eac2d-c839-4663-94ef-2535fb354410
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: f13618bb-3a8b-4f61-8ac4-55d865622a8a
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 30
+          elements:
+            - type: CELL
+              cellId: 3c2b1d77-7fda-4dfd-a2ae-d1c2af8cb149
+              height: null
+              showLabel: true
+        - start: 30
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 77295dc4-a86d-475b-bcba-9a43a952cfac
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 21
+          elements:
+            - type: CELL
+              cellId: 66e2d78f-72a7-4adc-8ab0-d5600811fa0c
+              height: null
+              showLabel: true
+        - start: 21
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 46320550-9bf2-47bc-aa53-c68885b8bac3
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: df90afc2-e40f-4e33-8106-d6a0f035a680
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: 80ebfa7f-6ecd-43c5-b687-129b5e8002ad
+              height: null
+              showLabel: true
+    - columns:
+        - start: 0
+          end: 120
+          elements:
+            - type: CELL
+              cellId: d78a21ad-a8ba-4e5a-befd-5439486baa5b
               height: null
               showLabel: true
