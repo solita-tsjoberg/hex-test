@@ -1,6 +1,6 @@
 schemaVersion: 1
 meta:
-  sourceVersionId: 9bd1f658-7029-47c6-b504-21cbc368bac2 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
+  sourceVersionId: 69c3a908-7f70-4878-88d3-05bb11316ba9 # DO NOT CHANGE - Hex uses this to match up project versions when reimporting the file
   description: null
   projectId: 97daf5e4-9ab2-46d1-bb13-e7d77c8ecf0f # DO NOT CHANGE - Unique ID of the project from which this file was generated
   title: Solita Hackathon 2022
@@ -1698,13 +1698,5 @@ appLayout:
           elements:
             - type: CELL
               cellId: 0357ddfd-b665-4b7e-b3f9-52fbbc16f18d
-              height: null
-              showLabel: true
-    - columns:
-        - start: 0
-          end: 120
-          elements:
-            - type: CELL
-              cellId: d78a21ad-a8ba-4e5a-befd-5439486baa5b
               height: null
               showLabel: true
